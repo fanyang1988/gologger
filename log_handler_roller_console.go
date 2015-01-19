@@ -1,29 +1,29 @@
 package log
 
 import (
-	"fmt"
+    "fmt"
 )
 
 type roller2Console struct {
 }
 
 func (self roller2Console) init() {
-	return
+    return
 }
 
 func (self roller2Console) roll(msg *logMsg) {
-	return
+    return
 }
 
 func (self roller2Console) close() {
-	return
+    return
 }
 
 func (self roller2Console) handle(msg *logMsg) error {
-	fmt.Printf("%s\n", msg.info)
-	return nil
+    fmt.Printf("console %s\n", msg.info)
+    return nil
 }
 
 func (self roller2Console) setNext(n logHandler) {
-	return
+    return
 }

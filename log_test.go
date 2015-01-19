@@ -18,6 +18,11 @@ func TestLogStart(t *testing.T) {
     }
 
     logMng.Init()
+    logMng.GetLogger("info").Info("ddddddddddd1")
+    logMng.GetLogger("info").Info("ddddddddddd2")
+    logMng.GetLogger("info").Info("ddddddddddd3")
+    logMng.GetLogger("info").Warn("ddddddddddd warn")
+    logMng.GetLogger("info").Debug("ddddddddddd debug")
     logMng.Close()
 
     return

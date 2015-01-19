@@ -3,7 +3,6 @@ package log
 import (
     "errors"
     "fmt"
-    //sj "github.com/bitly/go-simplejson"
     "github.com/fanyang1988/goconfig"
     "sync"
 )
@@ -53,7 +52,9 @@ func (self *Log) Init() error {
             continue
         }
 
-        new_logger, build_err := buildLogger(logger_name_str, logger_info)
+        logger := self.loggers[logger_name_str]
+
+        new_logger, build_err := buildLogger(logger, logger_name_str, logger_info)
 
         if build_err != nil {
             continue
