@@ -1,13 +1,16 @@
 package log
 
 import (
-	sj "github.com/bitly/go-simplejson"
+    "fmt"
+    //sj "github.com/bitly/go-simplejson"
 )
 
-func buildLogger(name string, level int, config *sj.Json) *Logger {
-	return nil
+func buildLogger(name string, config map[string]interface{}) (*Logger, error) {
+    fmt.Printf("name : %s\n", name)
+    fmt.Printf("%s\n", config["type"])
+    return nil, nil
 }
 
-func mkLogger(logger *Logger, level int, config *sj.Json) {
-
+func reBuildLogger(logger *Logger, config map[string]interface{}) error {
+    return nil
 }

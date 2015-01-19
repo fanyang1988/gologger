@@ -8,5 +8,8 @@
 		"name"  : "info",
 		"type"  : "console",
 		"level" : "debug"
+	},{
+		"type"  : "console",
+		"level" : "debug"
 	}]
 }
