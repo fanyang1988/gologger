@@ -32,7 +32,7 @@ func NewLogger(name string) *Logger {
 
 func CloseLogger(logger *Logger) {
 	if logger != nil {
-		logger.endlog()
+		logger.endLog()
 	}
 }
 
