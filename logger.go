@@ -14,11 +14,26 @@ const (
 )
 
 type Logger struct {
-	level    int
 	handlers []logHandler
 	name     string
 	log_conn chan *logMsg
 	log_wait sync.WaitGroup
+}
+
+func NewLogger(name string) *Logger {
+	new_logger := &Logger{
+		name:     name,
+		log_conn: make(chan *logMsg),
+	}
+	new_logger.reload()
+	go new_logger.startLog()
+	return new_logger
+}
+
+func CloseLogger(logger *Logger) {
+	if logger != nil {
+		logger.endlog()
+	}
 }
 
 func (self *Logger) log(level int, info string) {

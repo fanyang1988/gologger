@@ -17,7 +17,6 @@ func (self *Log) GetLogger(name string) *Logger {
 
 func (self *Log) newLogger(name string) *Logger {
 	return &Logger{
-		level: self.level,
-		name:  name,
+		name: name,
 	}
 }
