@@ -1,6 +1,7 @@
 package log
 
 import (
+	"container/list"
 	"testing"
 )
 
@@ -15,9 +16,11 @@ func TestBaseLogger(t *testing.T) {
 
 	logger2test := &Logger{
 		name:     "test_log",
-		handlers: []logHandler{log_lv_filter},
+		handlers: list.New(),
 		log_conn: make(chan *logMsg),
 	}
+
+	logger2test.handlers.PushBack(log_lv_filter)
 
 	go logger2test.startLog()
 
@@ -41,9 +44,11 @@ func TestLoggerFunc(t *testing.T) {
 
 	logger2test := &Logger{
 		name:     "test_log",
-		handlers: []logHandler{log_lv_filter},
+		handlers: list.New(),
 		log_conn: make(chan *logMsg),
 	}
+
+	logger2test.handlers.PushBack(log_lv_filter)
 
 	go logger2test.startLog()
 

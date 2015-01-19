@@ -1,6 +1,7 @@
 package log
 
 import (
+	"container/list"
 	"sync"
 )
 
@@ -14,7 +15,7 @@ const (
 )
 
 type Logger struct {
-	handlers []logHandler
+	handlers *list.List
 	name     string
 	log_conn chan *logMsg
 	log_wait sync.WaitGroup
@@ -67,8 +68,11 @@ func (self *Logger) endLog() {
 }
 
 func (self *Logger) logMsg(msg *logMsg) {
-	for _, hander := range self.handlers {
-		hander.handle(msg)
+	for e := self.handlers.Front(); e != nil; e = e.Next() {
+		hander, ok := e.Value.(logHandler)
+		if ok {
+			hander.handle(msg)
+		}
 	}
 }
 
