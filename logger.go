@@ -1,5 +1,9 @@
 package log
 
+import (
+	"sync"
+)
+
 const (
 	All = iota
 	DEBUG
@@ -13,19 +17,48 @@ type Logger struct {
 	level    int
 	handlers []logHandler
 	name     string
+	log_conn chan *logMsg
+	log_wait sync.WaitGroup
 }
 
 func (self *Logger) log(level int, info string) {
 	msg := newLogMsg(level, info)
-	self.logMsg(msg)
+	if msg != nil {
+		self.log_wait.Add(1)
+		self.log_conn <- msg
+	}
 }
 
-func (self *Logger) logMsg(msg *logMsg) error {
+func (self *Logger) startLog() {
+	for {
+		select {
+		case msg, ok := <-self.log_conn:
+			if !ok {
+				return
+			}
+			if msg == nil {
+				self.reload()
+			} else {
+				self.logMsg(msg)
+				self.log_wait.Done()
+			}
+		}
+	}
+}
+
+func (self *Logger) endLog() {
+	self.log_wait.Wait()
+	close(self.log_conn)
+}
+
+func (self *Logger) logMsg(msg *logMsg) {
 	for _, hander := range self.handlers {
 		hander.handle(msg)
 	}
+}
 
-	return nil
+func (self *Logger) reload() {
+
 }
 
 func (self *Logger) Debug(info string) {
