@@ -18,6 +18,17 @@ type Log struct {
     config_name string
 }
 
+func NewLog(config_name, config_path string, config_mng *goconfig.Config) *Log {
+    new_log := &Log{
+        config_chan: make(chan string),
+        loggers:     make(map[string]*Logger),
+        config:      config_mng,
+        config_path: config_path,
+        config_name: config_name,
+    }
+    return new_log
+}
+
 func (self *Log) Init() error {
     self.config.Reg(self.config_name, self.config_path, true)
     self.config.RegNotifyChan(self.config_chan)

@@ -9,13 +9,7 @@ func TestLogStart(t *testing.T) {
 
     configMng := goconfig.NewConfig()
 
-    logMng := &Log{
-        config_chan: make(chan string),
-        loggers:     make(map[string]*Logger),
-        config:      configMng,
-        config_path: "log_config.json",
-        config_name: "logger",
-    }
+    logMng := NewLog("logger", "log_config.json", configMng)
 
     logMng.Init()
     logMng.GetLogger("info").Info("ddddddddddd1")
