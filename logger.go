@@ -2,6 +2,7 @@ package log
 
 import (
     "container/list"
+    "fmt"
     "sync"
 )
 
@@ -40,7 +41,8 @@ func CloseLogger(logger *Logger) {
     }
 }
 
-func (self *Logger) log(level int, info string) {
+func (self *Logger) log(level int, format string, v []interface{}) {
+    info := fmt.Sprintf(format, v...)
     msg := newLogMsg(level, self.name, info)
     if msg != nil {
         self.log_wait.Add(1)
@@ -83,22 +85,22 @@ func (self *Logger) reload() {
 
 }
 
-func (self *Logger) Debug(info string) {
-    self.log(DEBUG, info)
+func (self *Logger) Debug(format string, v ...interface{}) {
+    self.log(DEBUG, format, v)
 }
 
-func (self *Logger) Info(info string) {
-    self.log(INFO, info)
+func (self *Logger) Info(format string, v ...interface{}) {
+    self.log(INFO, format, v)
 }
 
-func (self *Logger) Warn(info string) {
-    self.log(WARN, info)
+func (self *Logger) Warn(format string, v ...interface{}) {
+    self.log(WARN, format, v)
 }
 
-func (self *Logger) Error(info string) {
-    self.log(ERROR, info)
+func (self *Logger) Error(format string, v ...interface{}) {
+    self.log(ERROR, format, v)
 }
 
-func (self *Logger) Fatal(info string) {
-    self.log(FATAL, info)
+func (self *Logger) Fatal(format string, v ...interface{}) {
+    self.log(FATAL, format, v)
 }

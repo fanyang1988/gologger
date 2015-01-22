@@ -12,7 +12,7 @@ func TestLogStart(t *testing.T) {
     logMng := NewLog("logger", "log_config.json", configMng)
 
     logMng.Init()
-    logMng.GetLogger("info").Info("ddddddddddd1")
+    logMng.GetLogger("info").Info("ddddddddddd1 %s %s", "infodd", "sssss")
     logMng.GetLogger("info").Info("ddddddddddd2")
     logMng.GetLogger("info").Info("ddddddddddd3")
     logMng.GetLogger("info").Warn("ddddddddddd warn")
