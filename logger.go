@@ -14,6 +14,10 @@ const (
     FATAL
 )
 
+var (
+    level_str = []string{"All", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"}
+)
+
 type Logger struct {
     handlers *list.List
     name     string
@@ -37,7 +41,7 @@ func CloseLogger(logger *Logger) {
 }
 
 func (self *Logger) log(level int, info string) {
-    msg := newLogMsg(level, info)
+    msg := newLogMsg(level, self.name, info)
     if msg != nil {
         self.log_wait.Add(1)
         self.log_conn <- msg
