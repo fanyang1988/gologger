@@ -3,6 +3,7 @@ package log
 import (
     "errors"
     "fmt"
+    "strconv"
     "strings"
     //sj "github.com/bitly/go-simplejson"
 )
@@ -25,18 +26,29 @@ func getLogLevel(str string) int {
     return INFO
 }
 
-func getNewRoller(typ, path string) roller {
+func getNewRoller(typ, path, max, format string) roller {
     typ_upper := strings.ToUpper(typ)
+    max_int, int_ok := strconv.ParseInt(max, 10, 64)
+    if int_ok != nil {
+        max_int = 0
+    }
     switch typ_upper {
     case "CONSOLE":
-        return roller2Console{}
+        return &roller2Console{}
     case "FILE":
-        return roller2File{path: path}
+        return &roller2File{
+            path: path,
+            max:  max_int,
+        }
     case "DATEFILE":
-        return roller2DateFile{path: path}
+        return &roller2DateFile{
+            path:   path,
+            max:    max_int,
+            format: format,
+        }
     }
 
-    return roller2Console{}
+    return &roller2Console{}
 }
 
 func buildLogger(logger *Logger, name string, config map[string]interface{}) (*Logger, error) {
@@ -44,11 +56,19 @@ func buildLogger(logger *Logger, name string, config map[string]interface{}) (*L
 
     log_level, log_level_ok := config["level"].(string)
     log_path, log_path_ok := config["path"].(string)
+    log_format, log_format_ok := config["format"].(string)
+    log_max, log_max_ok := config["max"].(string)
     if !log_level_ok {
         log_level = "INFO"
     }
     if !log_path_ok {
         log_path = "unpath.log"
+    }
+    if !log_format_ok {
+        log_format = ""
+    }
+    if !log_max_ok {
+        log_max = "0"
     }
 
     // log level
@@ -61,7 +81,12 @@ func buildLogger(logger *Logger, name string, config map[string]interface{}) (*L
     if !log_type_ok {
         return nil, errors.New("type error")
     }
-    roller := getNewRoller(log_type, log_path)
+    roller := getNewRoller(log_type, log_path, log_max, log_format)
+    roller_init_err := roller.init()
+    if roller_init_err != nil {
+        roller.close()
+        return nil, roller_init_err
+    }
     log_lv_filter.setNext(roller)
 
     new_logger := logger

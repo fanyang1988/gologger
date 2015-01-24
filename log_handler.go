@@ -1,13 +1,13 @@
 package log
 
 type logHandler interface {
-	setNext(n logHandler)
-	handle(msg *logMsg) error
+    setNext(n logHandler)
+    handle(msg *logMsg) error
 }
 
 type roller interface {
-	logHandler
-	init()
-	roll(msg *logMsg)
-	close()
+    logHandler
+    init() error
+    roll(msg *logMsg)
+    close()
 }

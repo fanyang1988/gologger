@@ -68,6 +68,7 @@ func (self *Log) Init() error {
         new_logger, build_err := buildLogger(logger, logger_name_str, logger_info)
 
         if build_err != nil {
+            fmt.Printf("logger %s build err %s", logger_name_str, build_err.Error())
             continue
         }
 

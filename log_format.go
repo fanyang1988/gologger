@@ -16,7 +16,7 @@ func format(level int, typ, info string) string {
     time_str := time.Now().Format(date_format)
 
     fmt.Fprintf(buf,
-        "[%s][%s][%s] - %s",
+        "[%s][%s][%s] - %s\n",
         time_str,
         level_str[level],
         typ,

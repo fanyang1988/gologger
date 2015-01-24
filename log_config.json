@@ -3,7 +3,15 @@
 		"name"  : "info",
 		"type"  : "dateFile",
 		"level" : "info",
-		"path"  : "./info.log"
+		"path"  : "./log/info",
+		"format": "-2006-01-02.log",
+		"max"   : "1024000"
+	},{
+		"name"  : "test",
+		"type"  : "file",
+		"level" : "info",
+		"path"  : "./log/test.log",
+		"max"   : "1024000"
 	},{
 		"name"  : "info",
 		"type"  : "console",
