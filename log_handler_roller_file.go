@@ -1,7 +1,7 @@
 package log
 
 import (
-    "fmt"
+    "bufio"
     "os"
 )
 
@@ -9,7 +9,9 @@ type roller2File struct {
     path string
     max  int64
 
-    fd  *os.File
+    fd          *os.File
+    writer      *bufio.Writer
+    check_count int
 }
 
 func (self *roller2File) init() error {
@@ -17,6 +19,7 @@ func (self *roller2File) init() error {
 }
 
 func (self *roller2File) checkfile() error {
+    self.check_count = 100
     if self.fd == nil {
         nfd, open_err := createLogFile(self.path, self.max, "")
         if open_err != nil {
@@ -24,11 +27,13 @@ func (self *roller2File) checkfile() error {
             return open_err
         }
         self.fd = nfd
+        self.writer = bufio.NewWriter(self.fd)
     } else {
         fstat, err := self.fd.Stat()
         if err == nil && fstat.Size() <= self.max {
             return nil
         }
+        self.writer.Flush()
         self.fd.Close()
         self.fd = nil
 
@@ -38,6 +43,7 @@ func (self *roller2File) checkfile() error {
             return open_err
         }
         self.fd = nfd
+        self.writer = bufio.NewWriter(self.fd)
     }
     return nil
 }
@@ -49,18 +55,23 @@ func (self *roller2File) roll(msg *logMsg) {
 
 func (self *roller2File) close() {
     if self.fd != nil {
+        self.writer.Flush()
         self.fd.Close()
     }
     return
 }
 
 func (self *roller2File) handle(msg *logMsg) error {
-    err := self.checkfile()
-    if err != nil {
-        return err
+    self.check_count--
+    self.writer.WriteString(msg.info)
+
+    if self.check_count <= 0 {
+        self.writer.Flush()
+        err := self.checkfile()
+        if err != nil {
+            return err
+        }
     }
-    fmt.Printf("log info %s\n", msg.info)
-    self.fd.WriteString(msg.info)
     return nil
 }
 

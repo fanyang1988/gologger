@@ -67,12 +67,10 @@ func getLogFile(path_log string, size_max int64, tformat string) string {
 func createLogFile(path_log string, size_max int64, tformat string) (*os.File, error) {
     path_to_create := getLogFile(path_log, size_max, tformat)
     if !isFileExist(path_to_create) {
-        fmt.Printf("11111 %s\n", path_to_create)
         path_dir := path.Dir(path_to_create)
         os.MkdirAll(path_dir, os.ModeDir)
         return os.Create(path_to_create)
     } else {
-        fmt.Printf("22222 %s\n", path_to_create)
         f, err := os.OpenFile(path_to_create, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
         fmt.Printf("%s\n", f)
         return f, err
