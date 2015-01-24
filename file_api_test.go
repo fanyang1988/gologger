@@ -26,13 +26,13 @@ func TestFileExist(t *testing.T) {
 }
 
 func TestNewFilePath(t *testing.T) {
-    new_file_1 := newFilePath(test_file_path1)
+    new_file_1 := newFilePath(test_file_path1, 1)
     t.Logf("new_file_1 %s", new_file_1)
-    new_file_2 := newFilePath(test_file_path2)
+    new_file_2 := newFilePath(test_file_path2, 1)
     t.Logf("new_file_2 %s", new_file_2)
-    new_file_3 := newFilePath(test_file_path3)
+    new_file_3 := newFilePath(test_file_path3, 1)
     t.Logf("new_file_3 %s", new_file_3)
-    new_file_4 := newFilePath(test_file_path4)
+    new_file_4 := newFilePath(test_file_path4, 1)
     t.Logf("new_file_4 %s", new_file_4)
     return
 }
@@ -47,5 +47,12 @@ func TestGetNowDateFilePath(t *testing.T) {
     t.Logf("new_file_3 %s", new_file_3)
     new_file_4 := getNowDateFilePath(test_file_path4, time_format)
     t.Logf("new_file_4 %s", new_file_4)
+    return
+}
+
+func TestAll(t *testing.T) {
+    createLogFile("./test/wee/qq/ee/ww.txt", 0, "")
+    createLogFile(test_file_path1, 1, "")
+    createLogFile(test_file_path1, 1, "-2006-01-02.log")
     return
 }
