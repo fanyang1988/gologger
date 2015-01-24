@@ -34,13 +34,16 @@ func TestLogFile(t *testing.T) {
     logMng.GetLogger("test").Info("ddddddddddd3")
     logMng.GetLogger("test").Warn("ddddddddddd warn")
     logMng.GetLogger("test").Debug("ddddddddddd debug")
-    /*
-       num := 1
-       for {
-           num += 1
-           logMng.GetLogger("test").Info("11111111111111 debug %d", num)
-       }
-    */
+
+    num := 1
+    for {
+        num += 1
+        if num >= 30000 {
+            break
+        }
+        logMng.GetLogger("test").Info("11111111111111 debug %d", num)
+    }
+
     logMng.Close()
 
     return

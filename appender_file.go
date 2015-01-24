@@ -5,7 +5,7 @@ import (
     "os"
 )
 
-type roller2File struct {
+type appender2File struct {
     path string
     max  int64
 
@@ -14,11 +14,11 @@ type roller2File struct {
     check_count int
 }
 
-func (self *roller2File) init() error {
+func (self *appender2File) init() error {
     return self.checkfile()
 }
 
-func (self *roller2File) checkfile() error {
+func (self *appender2File) checkfile() error {
     self.check_count = 100
     if self.fd == nil {
         nfd, open_err := createLogFile(self.path, self.max, "")
@@ -48,12 +48,7 @@ func (self *roller2File) checkfile() error {
     return nil
 }
 
-func (self *roller2File) roll(msg *logMsg) {
-
-    return
-}
-
-func (self *roller2File) close() {
+func (self *appender2File) close() {
     if self.fd != nil {
         self.writer.Flush()
         self.fd.Close()
@@ -61,7 +56,7 @@ func (self *roller2File) close() {
     return
 }
 
-func (self *roller2File) handle(msg *logMsg) error {
+func (self *appender2File) handle(msg *logMsg) error {
     self.check_count--
     self.writer.WriteString(msg.info)
 
@@ -75,6 +70,6 @@ func (self *roller2File) handle(msg *logMsg) error {
     return nil
 }
 
-func (self *roller2File) setNext(n logHandler) {
+func (self *appender2File) setNext(n logHandler) {
     return
 }

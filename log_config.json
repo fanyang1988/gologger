@@ -10,7 +10,7 @@
 		"name"  : "test",
 		"type"  : "file",
 		"level" : "info",
-		"path"  : "./log/test.log",
+		"path"  : "c:/log/test.log",
 		"max"   : "1024000"
 	},{
 		"name"  : "info",

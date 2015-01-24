@@ -5,9 +5,8 @@ type logHandler interface {
     handle(msg *logMsg) error
 }
 
-type roller interface {
+type appender interface {
     logHandler
     init() error
-    roll(msg *logMsg)
     close()
 }

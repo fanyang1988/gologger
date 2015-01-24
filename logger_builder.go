@@ -26,7 +26,7 @@ func getLogLevel(str string) int {
     return INFO
 }
 
-func getNewRoller(typ, path, max, format string) roller {
+func getNewRoller(typ, path, max, format string) appender {
     typ_upper := strings.ToUpper(typ)
     max_int, int_ok := strconv.ParseInt(max, 10, 64)
     if int_ok != nil {
@@ -34,21 +34,21 @@ func getNewRoller(typ, path, max, format string) roller {
     }
     switch typ_upper {
     case "CONSOLE":
-        return &roller2Console{}
+        return &appender2Console{}
     case "FILE":
-        return &roller2File{
+        return &appender2File{
             path: path,
             max:  max_int,
         }
     case "DATEFILE":
-        return &roller2DateFile{
+        return &appender2DateFile{
             path:   path,
             max:    max_int,
             format: format,
         }
     }
 
-    return &roller2Console{}
+    return &appender2Console{}
 }
 
 func buildLogger(logger *Logger, name string, config map[string]interface{}) (*Logger, error) {

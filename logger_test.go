@@ -10,7 +10,7 @@ func TestBaseLogger(t *testing.T) {
     log_lv_filter := &levelFilter{
         level: INFO,
     }
-    roll_to_console := &roller2Console{}
+    roll_to_console := &appender2Console{}
 
     log_lv_filter.setNext(roll_to_console)
 
@@ -34,7 +34,7 @@ func TestLoggerFunc(t *testing.T) {
     log_lv_filter := &levelFilter{
         level: INFO,
     }
-    roll_to_console := &roller2Console{}
+    roll_to_console := &appender2Console{}
 
     log_lv_filter.setNext(roll_to_console)
 
