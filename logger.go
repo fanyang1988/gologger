@@ -41,8 +41,26 @@ func CloseLogger(logger *Logger) {
     }
 }
 
-func (self *Logger) log(level int, format string, v []interface{}) {
+func (self *Logger) log(level int, v []interface{}) {
+    info := fmt.Sprint(v...)
+    msg := newLogMsg(level, self.name, info)
+    if msg != nil {
+        self.log_wait.Add(1)
+        self.log_conn <- msg
+    }
+}
+
+func (self *Logger) logf(level int, format string, v []interface{}) {
     info := fmt.Sprintf(format, v...)
+    msg := newLogMsg(level, self.name, info)
+    if msg != nil {
+        self.log_wait.Add(1)
+        self.log_conn <- msg
+    }
+}
+
+func (self *Logger) logln(level int, v []interface{}) {
+    info := fmt.Sprintln(v...)
     msg := newLogMsg(level, self.name, info)
     if msg != nil {
         self.log_wait.Add(1)
@@ -86,21 +104,65 @@ func (self *Logger) reload() {
 }
 
 func (self *Logger) Debug(format string, v ...interface{}) {
-    self.log(DEBUG, format, v)
+    self.logf(DEBUG, format, v)
 }
 
 func (self *Logger) Info(format string, v ...interface{}) {
-    self.log(INFO, format, v)
+    self.logf(INFO, format, v)
 }
 
 func (self *Logger) Warn(format string, v ...interface{}) {
-    self.log(WARN, format, v)
+    self.logf(WARN, format, v)
 }
 
 func (self *Logger) Error(format string, v ...interface{}) {
-    self.log(ERROR, format, v)
+    self.logf(ERROR, format, v)
 }
 
-func (self *Logger) Fatal(format string, v ...interface{}) {
-    self.log(FATAL, format, v)
+func (self *Logger) Fatal(v ...interface{}) {
+    self.log(FATAL, v)
+}
+
+func (self *Logger) Fatalf(format string, v ...interface{}) {
+    self.logf(FATAL, format, v)
+}
+
+func (self *Logger) Fatalln(v ...interface{}) {
+    self.logln(FATAL, v)
+}
+
+func (self *Logger) Print(v ...interface{}) {
+    self.log(INFO, v)
+}
+func (self *Logger) Printf(format string, v ...interface{}) {
+    self.logf(INFO, format, v)
+}
+func (self *Logger) Println(v ...interface{}) {
+    self.logln(INFO, v)
+}
+
+func (self *Logger) Panic(v ...interface{}) {
+    self.log(FATAL, v)
+}
+func (self *Logger) Panicf(format string, v ...interface{}) {
+    self.logf(FATAL, format, v)
+}
+func (self *Logger) Panicln(v ...interface{}) {
+    self.logln(FATAL, v)
+}
+
+func (self *Logger) SetFlags(flag int) {
+
+}
+func (self *Logger) SetPrefix(prefix string) {
+
+}
+func (self *Logger) Flags() int {
+    return 0
+}
+func (self *Logger) Output(calldepth int, s string) error {
+    return nil
+}
+func (self *Logger) Prefix() string {
+    return ""
 }
