@@ -9,9 +9,8 @@ type appender2File struct {
     path string
     max  int64
 
-    fd          *os.File
-    writer      *bufio.Writer
-    check_count int
+    fd     *os.File
+    writer *bufio.Writer
 }
 
 func (self *appender2File) init() error {
@@ -19,7 +18,6 @@ func (self *appender2File) init() error {
 }
 
 func (self *appender2File) checkfile() error {
-    self.check_count = 100
     if self.fd == nil {
         nfd, open_err := createLogFile(self.path, self.max, "")
         if open_err != nil {
@@ -57,16 +55,14 @@ func (self *appender2File) close() {
 }
 
 func (self *appender2File) handle(msg *logMsg) error {
-    self.check_count--
     self.writer.WriteString(msg.info)
 
-    if self.check_count <= 0 {
-        self.writer.Flush()
-        err := self.checkfile()
-        if err != nil {
-            return err
-        }
+    self.writer.Flush()
+    err := self.checkfile()
+    if err != nil {
+        return err
     }
+
     return nil
 }
 
