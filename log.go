@@ -26,10 +26,15 @@ func NewLog(config_name, config_path string, config_mng *goconfig.Config) *Log {
         config_path: config_path,
         config_name: config_name,
     }
+    err := new_log.initLog()
+    if err != nil {
+        fmt.Printf("log init err : %s", err.Error())
+        return nil
+    }
     return new_log
 }
 
-func (self *Log) Init() error {
+func (self *Log) initLog() error {
     self.config.Reg(self.config_name, self.config_path, true)
     self.config.RegNotifyChan(self.config_chan)
 

@@ -11,7 +11,6 @@ func TestLogStart(t *testing.T) {
 
     logMng := NewLog("logger", "log_config.json", configMng)
 
-    logMng.Init()
     logMng.GetLogger("info").Info("ddddddddddd1 %s %s", "infodd", "sssss")
     logMng.GetLogger("info").Info("ddddddddddd2")
     logMng.GetLogger("info").Info("ddddddddddd3")
@@ -28,7 +27,6 @@ func TestLogFile(t *testing.T) {
 
     logMng := NewLog("logger", "log_config.json", configMng)
 
-    logMng.Init()
     logMng.GetLogger("test").Info("ddddddddddd1 %s %s", "infodd", "sssss")
     logMng.GetLogger("test").Info("ddddddddddd2")
     logMng.GetLogger("test").Info("ddddddddddd3")
