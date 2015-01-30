@@ -36,10 +36,11 @@ func TestLogFile(t *testing.T) {
     num := 1
     for {
         num += 1
-        if num >= 30000 {
+        if num >= 3000 {
             break
         }
         logMng.GetLogger("test").Info("11111111111111 debug %d", num)
+        logMng.GetLogger("info").Info("12121212 debug %d", num)
     }
 
     logMng.Close()
