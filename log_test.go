@@ -1,4 +1,4 @@
-package log
+package gologger
 
 import (
     "github.com/fanyang1988/goconfig"

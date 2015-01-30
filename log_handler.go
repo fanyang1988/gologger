@@ -1,4 +1,4 @@
-package log
+package gologger
 
 type logHandler interface {
     setNext(n logHandler)

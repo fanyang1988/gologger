@@ -1,7 +1,7 @@
-package log
+package gologger
 
 import (
-	"testing"
+    "testing"
 )
 
 func TestLoggerBuilder(t *testing.T) {

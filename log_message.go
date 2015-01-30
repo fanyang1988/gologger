@@ -1,4 +1,4 @@
-package log
+package gologger
 
 type logMsg struct {
     level int

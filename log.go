@@ -1,4 +1,4 @@
-package log
+package gologger
 
 import (
     "errors"
@@ -18,7 +18,7 @@ type Log struct {
     config_name string
 }
 
-func NewLog(config_name, config_path string, config_mng *goconfig.Config) *Log {
+func New(config_name, config_path string, config_mng *goconfig.Config) *Log {
     new_log := &Log{
         config_chan: make(chan string),
         loggers:     make(map[string]*Logger),
